@@ -1,7 +1,7 @@
 package config
 
 import (
-	"golang-clean-arc/helper"
+	"golang-clean-arc-web/helper"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

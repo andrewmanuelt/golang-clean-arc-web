@@ -2,8 +2,8 @@ package service
 
 import (
 	"errors"
-	"golang-clean-arc/entitiy"
-	"golang-clean-arc/test/repository"
+	"golang-clean-arc-web/entitiy"
+	"golang-clean-arc-web/test/repository"
 )
 
 type ExampleService struct {

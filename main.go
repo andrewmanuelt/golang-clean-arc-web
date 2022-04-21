@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"golang-clean-arc/config"
-	"golang-clean-arc/controller"
-	"golang-clean-arc/entitiy"
-	"golang-clean-arc/middleware"
-	"golang-clean-arc/repository"
-	"golang-clean-arc/service"
+	"golang-clean-arc-web/config"
+	"golang-clean-arc-web/controller"
+	"golang-clean-arc-web/entitiy"
+	"golang-clean-arc-web/middleware"
+	"golang-clean-arc-web/repository"
+	"golang-clean-arc-web/service"
 	"net/http"
 
 	"github.com/gorilla/mux"

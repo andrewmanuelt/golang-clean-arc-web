@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"golang-clean-arc/entitiy"
+	"golang-clean-arc-web/entitiy"
 
 	"gorm.io/gorm"
 )

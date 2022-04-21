@@ -1,9 +1,9 @@
 package service
 
 import (
-	"golang-clean-arc/entitiy"
-	"golang-clean-arc/model"
-	"golang-clean-arc/repository"
+	"golang-clean-arc-web/entitiy"
+	"golang-clean-arc-web/model"
+	"golang-clean-arc-web/repository"
 )
 
 type ExampleService interface {

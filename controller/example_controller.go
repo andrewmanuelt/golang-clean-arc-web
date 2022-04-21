@@ -2,10 +2,10 @@ package controller
 
 import (
 	"encoding/json"
-	"golang-clean-arc/entitiy"
-	"golang-clean-arc/helper"
-	"golang-clean-arc/model"
-	"golang-clean-arc/service"
+	"golang-clean-arc-web/entitiy"
+	"golang-clean-arc-web/helper"
+	"golang-clean-arc-web/model"
+	"golang-clean-arc-web/service"
 	"net/http"
 
 	"github.com/gorilla/mux"
