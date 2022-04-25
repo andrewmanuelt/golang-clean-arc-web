@@ -7,6 +7,7 @@ import (
 	authController "golang-clean-arc-web/controller/web/auth"
 	dashboardController "golang-clean-arc-web/controller/web/dashboard"
 	"golang-clean-arc-web/entity"
+	"golang-clean-arc-web/middleware"
 	"golang-clean-arc-web/repository"
 	"golang-clean-arc-web/service"
 	dashboardService "golang-clean-arc-web/service/dashboard"
@@ -35,6 +36,7 @@ func main() {
 
 	loginController := authController.NewLoginController(&authService)
 	registerController := authController.NewRegisterController(&authService)
+	logoutController := authController.NewLogoutController(&authService)
 
 	router := mux.NewRouter()
 
@@ -42,10 +44,14 @@ func main() {
 
 	router.PathPrefix("/asset").Handler(http.StripPrefix("/asset", static))
 
+	sub_router := router.NewRoute().Subrouter()
+	sub_router.Use(middleware.ExampleMiddleware)
+
 	exampleController.Route(router)
 	loginController.Route(router)
 	registerController.Route(router)
-	homeController.Route(router)
+	homeController.Route(sub_router)
+	logoutController.Route(sub_router)
 
 	fmt.Println("Server running at 127.0.0.1:9000")
 

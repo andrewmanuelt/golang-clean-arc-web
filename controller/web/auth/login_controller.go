@@ -53,6 +53,9 @@ func (controller *loginController) Login(w http.ResponseWriter, r *http.Request)
 
 		valid := helper.ValidatePassword(res.Password, []byte(password))
 
+		sess := helper.NewSession()
+		sess.SetSession(w, r, "username", res.Username)
+
 		if !valid {
 			http.Redirect(w, r, "/login", http.StatusFound)
 

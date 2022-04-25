@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/sessions"
@@ -8,7 +9,7 @@ import (
 
 type SessionInterface interface {
 	SetSession(w http.ResponseWriter, r *http.Request, key string, value string)
-	GetSession(w http.ResponseWriter, r *http.Request, key string) interface{}
+	GetSession(w http.ResponseWriter, r *http.Request, key string) string
 	DeleteAllSession(w http.ResponseWriter, r *http.Request)
 }
 
@@ -25,14 +26,16 @@ func (*sessionInterfaceImpl) DeleteAllSession(w http.ResponseWriter, r *http.Req
 	session.Save(r, w)
 }
 
-func (*sessionInterfaceImpl) GetSession(w http.ResponseWriter, r *http.Request, key string) interface{} {
+func (*sessionInterfaceImpl) GetSession(w http.ResponseWriter, r *http.Request, key string) string {
 	session, _ := store.Get(r, "session")
 
 	if len(session.Values) == 0 {
-		return nil
+		return ""
 	}
 
-	return session.Values[key]
+	x := session.Values[key]
+
+	return fmt.Sprintf("%s", x)
 }
 
 func (*sessionInterfaceImpl) SetSession(w http.ResponseWriter, r *http.Request, key string, value string) {

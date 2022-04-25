@@ -1,6 +1,9 @@
 package dashboard
 
 import (
+	"fmt"
+	"golang-clean-arc-web/config"
+	"golang-clean-arc-web/helper"
 	dashboardService "golang-clean-arc-web/service/dashboard"
 	"html/template"
 	"net/http"
@@ -20,8 +23,18 @@ func (controller *homeController) Home(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		template := template.Must(template.ParseFiles("./view/dashboard/index.html"))
 
-		data := []struct {
-		}{}
+		sess := helper.NewSession()
+		username := sess.GetSession(w, r, "username")
+
+		fmt.Print(username)
+
+		data := struct {
+			Title    string
+			Username string
+		}{
+			config.Env("APP_NAME") + " | Dashboard",
+			username,
+		}
 
 		template.Execute(w, data)
 
