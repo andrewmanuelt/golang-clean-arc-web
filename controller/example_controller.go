@@ -2,7 +2,7 @@ package controller
 
 import (
 	"encoding/json"
-	"golang-clean-arc-web/entitiy"
+	"golang-clean-arc-web/entity"
 	"golang-clean-arc-web/helper"
 	"golang-clean-arc-web/model"
 	"golang-clean-arc-web/service"
@@ -72,7 +72,7 @@ func (controller *exampleController) Update(w http.ResponseWriter, r *http.Reque
 
 	app_ver := r.FormValue("app_ver")
 
-	update_data := entitiy.App{
+	update_data := entity.App{
 		AppName: "Golang Updates",
 		AppVer:  app_ver,
 	}

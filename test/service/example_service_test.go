@@ -1,7 +1,7 @@
 package service
 
 import (
-	"golang-clean-arc-web/entitiy"
+	"golang-clean-arc-web/entity"
 	"golang-clean-arc-web/test/repository"
 	"testing"
 
@@ -24,7 +24,7 @@ func TestCategoryService_Get(t *testing.T) {
 }
 
 func TestCategoryService_GetFound(t *testing.T) {
-	app := entitiy.App{
+	app := entity.App{
 		AppName: "Golang",
 		AppVer:  "1",
 	}

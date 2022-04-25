@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"golang-clean-arc-web/config"
 	"golang-clean-arc-web/controller"
-	"golang-clean-arc-web/entitiy"
-	"golang-clean-arc-web/middleware"
+	authController "golang-clean-arc-web/controller/web/auth"
+	dashboardController "golang-clean-arc-web/controller/web/dashboard"
+	"golang-clean-arc-web/entity"
 	"golang-clean-arc-web/repository"
 	"golang-clean-arc-web/service"
+	dashboardService "golang-clean-arc-web/service/dashboard"
+	webService "golang-clean-arc-web/service/web"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -16,21 +19,35 @@ import (
 func main() {
 	db := config.Connection()
 
-	db.AutoMigrate(&entitiy.App{})
+	db.AutoMigrate(&entity.App{})
+	db.AutoMigrate(&entity.User{})
 
 	exampleRepository := repository.NewExampleRepository(db)
-
 	exampleService := service.NewExampleService(&exampleRepository)
-
 	exampleController := controller.NewExampleController(&exampleService)
 
-	// router := mux.NewRouter()
-	sub_router := mux.NewRouter().NewRoute().Subrouter()
-	sub_router.Use(middleware.ExampleMiddleware)
+	dashboardRepository := repository.NewDashboardRepository(db)
+	homeService := dashboardService.NewHomeService(&dashboardRepository)
+	homeController := dashboardController.NewHomeController(&homeService)
 
-	exampleController.Route(sub_router)
+	authRepository := repository.NewAuthRepository(db)
+	authService := webService.NewAuthService(&authRepository)
 
-	http.ListenAndServe(":9000", sub_router)
+	loginController := authController.NewLoginController(&authService)
+	registerController := authController.NewRegisterController(&authService)
+
+	router := mux.NewRouter()
+
+	static := http.FileServer(http.Dir("assets/"))
+
+	router.PathPrefix("/asset").Handler(http.StripPrefix("/asset", static))
+
+	exampleController.Route(router)
+	loginController.Route(router)
+	registerController.Route(router)
+	homeController.Route(router)
 
 	fmt.Println("Server running at 127.0.0.1:9000")
+
+	http.ListenAndServe(":9000", router)
 }

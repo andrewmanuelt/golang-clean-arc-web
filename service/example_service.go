@@ -1,7 +1,7 @@
 package service
 
 import (
-	"golang-clean-arc-web/entitiy"
+	"golang-clean-arc-web/entity"
 	"golang-clean-arc-web/model"
 	"golang-clean-arc-web/repository"
 )
@@ -31,7 +31,7 @@ func (example *exampleServiceImpl) Get() (response []model.ExampleResponse) {
 }
 
 func (example *exampleServiceImpl) Create(appName string, appVer string) (response model.ExampleResponse) {
-	example.ExampleRepository.Insert(entitiy.App{
+	example.ExampleRepository.Insert(entity.App{
 		AppName: appName,
 		AppVer:  appVer,
 	})
@@ -75,8 +75,8 @@ func (example *exampleServiceImpl) Erase(app_ver string) (response []model.Examp
 	return response
 }
 
-func NewExampleService(repository *repository.ExampleRepository) ExampleService {
+func NewExampleService(exampleRepository *repository.ExampleRepository) ExampleService {
 	return &exampleServiceImpl{
-		ExampleRepository: *repository,
+		ExampleRepository: *exampleRepository,
 	}
 }
