@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"golang-clean-arc-web/config"
 	"golang-clean-arc-web/controller"
+	webController "golang-clean-arc-web/controller/web"
 	authController "golang-clean-arc-web/controller/web/auth"
 	dashboardController "golang-clean-arc-web/controller/web/dashboard"
+	errorController "golang-clean-arc-web/controller/web/error"
 	"golang-clean-arc-web/entity"
 	"golang-clean-arc-web/middleware"
 	"golang-clean-arc-web/repository"
@@ -34,11 +36,17 @@ func main() {
 	authRepository := repository.NewAuthRepository(db)
 	authService := webService.NewAuthService(&authRepository)
 
+	indexRepository := repository.NewIndexRepository(db)
+	indexService := service.NewIndexService(&indexRepository)
+	indexController := webController.NewIndexController(&indexService)
+
 	loginController := authController.NewLoginController(&authService)
 	registerController := authController.NewRegisterController(&authService)
 	logoutController := authController.NewLogoutController(&authService)
 
 	router := mux.NewRouter()
+	router.Use(middleware.StaticfileMiddleware)
+	router.NotFoundHandler = http.HandlerFunc(errorController.Error404)
 
 	static := http.FileServer(http.Dir("assets/"))
 
@@ -52,6 +60,7 @@ func main() {
 	registerController.Route(router)
 	homeController.Route(sub_router)
 	logoutController.Route(sub_router)
+	indexController.Route(router)
 
 	fmt.Println("Server running at 127.0.0.1:9000")
 
