@@ -19,6 +19,38 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type customFilesys struct {
+	fs http.FileSystem
+}
+
+func (cfs customFilesys) Open(name string) (result http.File, err error) {
+	f, err := cfs.fs.Open(name)
+
+	if err != nil {
+		return nil, err
+	}
+
+	stat, err := f.Stat()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if stat.IsDir() {
+		f.Close()
+
+		errfile, err := cfs.fs.Open("/index.html")
+
+		if err != nil {
+			return nil, err
+		}
+
+		return errfile, nil
+	}
+
+	return f, nil
+}
+
 func main() {
 	db := config.Connection()
 
@@ -45,15 +77,14 @@ func main() {
 	logoutController := authController.NewLogoutController(&authService)
 
 	router := mux.NewRouter()
-	router.Use(middleware.StaticfileMiddleware)
 	router.NotFoundHandler = http.HandlerFunc(errorController.Error404)
 
-	static := http.FileServer(http.Dir("assets/"))
+	static := http.FileServer(customFilesys{http.Dir("assets/")})
 
 	router.PathPrefix("/asset").Handler(http.StripPrefix("/asset", static))
 
 	sub_router := router.NewRoute().Subrouter()
-	sub_router.Use(middleware.ExampleMiddleware)
+	sub_router.Use(middleware.AuthMiddleware)
 
 	exampleController.Route(router)
 	loginController.Route(router)

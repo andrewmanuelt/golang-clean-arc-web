@@ -1,7 +1,6 @@
 package dashboard
 
 import (
-	"fmt"
 	"golang-clean-arc-web/config"
 	"golang-clean-arc-web/helper"
 	dashboardService "golang-clean-arc-web/service/dashboard"
@@ -25,8 +24,6 @@ func (controller *homeController) Home(w http.ResponseWriter, r *http.Request) {
 
 		sess := helper.NewSession()
 		username := sess.GetSession(w, r, "username")
-
-		fmt.Print(username)
 
 		data := struct {
 			Title    string

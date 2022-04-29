@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"golang-clean-arc-web/config"
 	"golang-clean-arc-web/entity"
 	"golang-clean-arc-web/helper"
@@ -66,8 +65,6 @@ func (controller *loginController) Login(w http.ResponseWriter, r *http.Request)
 
 		return
 	}
-
-	fmt.Println("dashboard")
 
 	http.Redirect(w, r, "/login", http.StatusFound)
 }
